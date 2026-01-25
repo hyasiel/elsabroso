@@ -1,5 +1,6 @@
 import {Header} from "../ui/Header.tsx";
 import {Footer} from "../ui/Footer.tsx";
+import {Link} from "react-router-dom";
 
 
 export function Login () {
@@ -19,10 +20,10 @@ export function Login () {
                 </div>
 
                 <div className="login-buttons">
-                    <button className="login-button_send">
+                    <button className="login-button_send signup">
                         Ingresar
                     </button>
-                    <a href="http://#" className="login-button_create">Crear cuenta</a>
+                    <Link to="/signup" className="login-button_create">Crear cuenta</Link>
                 </div>
                 
             </div>
