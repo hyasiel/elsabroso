@@ -77,3 +77,12 @@
     text-decoration: none;
     color: #7a00cbca;
 }
+
+
+@media (max-width: 600px) {
+    .login-box {
+        margin-top: 13%;
+        width: 84%;
+        height: 80%;
+    }
+}

@@ -226,3 +226,22 @@
     width: 30px;
     height: 30px;
 }
+
+@media (max-width: 600px) {
+    .menu-cards {
+        padding: 5%;
+        padding-top: 120px;
+        gap: 30px;
+    }
+
+    .card { 
+        height: 250px;
+        font-size: 12px;
+    }
+
+    .card-btn {
+        width: 40%;
+        padding: 3px;
+        font-size: 12px;
+    }
+}
