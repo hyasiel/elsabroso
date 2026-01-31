@@ -3,6 +3,10 @@ const path = require("path");
 const port = 3000;
 const app = express();
 const cors = require("cors");
+const { connect } = require("./database/connection");
+
+
+connect()
 
 app.use(cors());
 app.use(express.json());
