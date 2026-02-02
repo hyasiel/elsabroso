@@ -78,7 +78,7 @@ export function Signup() {
 function sendDataUser(name: string, email: string, password: string) {
   console.log("Sending data...", name, email, password);
 
-  fetch("http://localhost:3000/register", {
+  fetch("http://localhost:3000/auth/register", {
     method: "POST",
 
     headers: {
@@ -86,9 +86,9 @@ function sendDataUser(name: string, email: string, password: string) {
     },
 
     body: JSON.stringify({
-      'name': name,
-      'email': email,
-      'password': password,
+      name: name,
+      email: email,
+      password: password,
     }),
   });
 }
