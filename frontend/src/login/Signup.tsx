@@ -75,10 +75,10 @@ export function Signup() {
   );
 }
 
-function sendDataUser(name: string, email: string, password: string) {
+async function sendDataUser(name: string, email: string, password: string) {
   console.log("Sending data...", name, email, password);
 
-  fetch("http://localhost:3000/auth/register", {
+  const response = await fetch("http://localhost:3000/auth/register", {
     method: "POST",
 
     headers: {
@@ -91,4 +91,13 @@ function sendDataUser(name: string, email: string, password: string) {
       password: password,
     }),
   });
+
+  const data = await response.json();
+
+  if(!response.ok) {
+    console.error("Error creating user");
+    return;
+  }
+
+  localStorage.setItem("token", data.token);
 }

@@ -1,4 +1,6 @@
 const { pool } = require("../../configs/dbConfig");
+const {nanoid} = require("nanoid");
+
 
 class UserRepository {
   //find user by email
@@ -12,9 +14,14 @@ class UserRepository {
   async createUser(user) {
     const res = await pool.query(
       "INSERT INTO users (user_id, username, email, password) VALUES (?, ?, ?, ?)",
-      ["23134", user.name, user.email, user.password],
+      [
+        nanoid(),
+        user.name,
+        user.email,
+        user.password,
+      ],
     );
-    return "usuario creado";
+    return res.insertId.toString();
   }
 }
 
