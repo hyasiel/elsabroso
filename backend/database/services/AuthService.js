@@ -14,6 +14,17 @@ class AuthService {
 
     return this.userRepository.createUser(userData);
   }
+
+  async loginUser(email, password) {
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) throw new Error("User not found");
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) throw new Error("Invalid credentials");
+
+    return user;
+  }
+  
 }
 
 module.exports = AuthService;
