@@ -17,7 +17,7 @@ async function register(req, res) {
         username: req.body.username,
       },
       process.env.JWT_SECRET || "defaultsecret",
-      { expiresIn: "5min" },
+      { expiresIn: "10min" },
     );
 
     console.log("jwt token:", token);
@@ -46,6 +46,8 @@ async function login(req, res) {
   try {
     const { email, password } = req.body;
 
+    console.log("Login attempt:", { email, password });
+
     const auth = new AuthService();
     const user = await auth.loginUser(email, password);
 
@@ -55,7 +57,7 @@ async function login(req, res) {
         email: user.email,
       },
       process.env.JWT_SECRET || "defaultsecret",
-      { expiresIn: "5min" },
+      { expiresIn: "10min" },
     );
 
     return res.status(200).json({
@@ -80,10 +82,23 @@ async function login(req, res) {
 
 
 async function verifyToken(req, res) {
-  return res.status(200).json({
-    message: "Token valid",
-    user: req.user,
-  });
+
+
+  console
+  try {
+  const auth = new AuthService();
+  const user = await auth.userRepository.findById(req.userId.userId);
+
+  console.log("Token valid for user:", user.username);
+
+  res.status(200).json({ message: "Token is valid", user: user.username });
+
+} catch (error) {
+  console.log("Token verification error:", error.message);
+  return res.status(500).json({ message: "Internal server error" });
+
+}
+
 }
 
 

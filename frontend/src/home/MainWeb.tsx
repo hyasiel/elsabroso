@@ -4,25 +4,27 @@ import React from "react";
 import { useEffect } from "react";
 
 export function MainWeb() {
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
 
-  //   if (!token) return;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  //   fetch("http://localhost:3000/auth/verifytoken", {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       if (data.user) {
-  //         console.log("Usuario logeado:", data.user);
-  //       } else {
-  //         localStorage.removeItem("token");
-  //       }
-  //     });
-  // }, []);
+    fetch("http://localhost:3000/auth/verifytoken", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Token verification response:", data);
+      if (data.user) {
+        alert(`Hola, ${data.user}!`);
+        console.log("Token is valid");
+      } else {
+        console.log("Token is invalid, clearing storage");
+      }});
+
+
+  }, []);
 
   return (
     <React.Fragment>

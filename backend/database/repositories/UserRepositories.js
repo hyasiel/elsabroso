@@ -10,16 +10,20 @@ class UserRepository {
     ]);
     return rows[0];
   }
+
+  async findById(id) {
+    const rows = await pool.query("SELECT * FROM users WHERE id = ?", [
+      id,
+    ]);
+    console.log("findById result:", rows);
+    return rows[0];
+  }
+
   //create user function
   async createUser(user) {
     const res = await pool.query(
       "INSERT INTO users (user_id, username, email, password) VALUES (?, ?, ?, ?)",
-      [
-        nanoid(),
-        user.name,
-        user.email,
-        user.password,
-      ],
+      [nanoid(), user.name, user.email, user.password],
     );
     return res.insertId.toString();
   }

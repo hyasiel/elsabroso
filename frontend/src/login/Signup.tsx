@@ -94,7 +94,7 @@ async function sendDataUser(name: string, email: string, password: string) {
 
   const data = await response.json();
 
-  if(!response.ok) {
+  if (!response.ok) {
     console.error("Error creating user");
     return;
   }
