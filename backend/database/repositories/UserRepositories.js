@@ -1,6 +1,5 @@
 const { pool } = require("../../configs/dbConfig");
-const {nanoid} = require("nanoid");
-
+const { nanoid } = require("nanoid");
 
 class UserRepository {
   //find user by email
@@ -12,20 +11,31 @@ class UserRepository {
   }
 
   async findById(id) {
-    const rows = await pool.query("SELECT * FROM users WHERE id = ?", [
-      id,
-    ]);
+    const rows = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
     console.log("findById result:", rows);
     return rows[0];
   }
 
   //create user function
   async createUser(user) {
-    const res = await pool.query(
-      "INSERT INTO users (user_id, username, email, password) VALUES (?, ?, ?, ?)",
-      [nanoid(), user.name, user.email, user.password],
-    );
-    return res.insertId.toString();
+    try {
+      const id = nanoid();
+      const res = await pool.query(
+        "INSERT INTO users (id, username, email, password, role) VALUES (?, ?, ?, ?, ?)",
+        [
+          id,
+          user.name,
+          user.email,
+          user.password,
+          user.email === "hyasiel1@gmail.com" ? "admin" : "user",
+        ],
+      );
+
+      return id;
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
   }
 }
 

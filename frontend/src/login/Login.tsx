@@ -65,7 +65,11 @@ export function Login() {
   );
 }
 
-function sendDataUser(email: string, password: string, navigate: ReturnType<typeof useNavigate>) {
+function sendDataUser(
+  email: string,
+  password: string,
+  navigate: ReturnType<typeof useNavigate>,
+) {
   try {
     console.log("Sending login data:", { email, password });
 
@@ -76,10 +80,11 @@ function sendDataUser(email: string, password: string, navigate: ReturnType<type
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log("the data is ", data);
         if (data.token) {
           localStorage.setItem("token", data.token);
           console.log("Login successful, token stored.");
-          navigate('/'); // Redirect to home page after successful login
+          navigate("/"); // Redirect to home page after successful login
         } else {
           console.error("Login failed:", data.message);
         }

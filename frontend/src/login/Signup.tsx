@@ -1,13 +1,13 @@
 import { Header } from "../ui/Header.tsx";
 import { Footer } from "../ui/Footer.tsx";
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Signup() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   function clearForm() {
     setName("");
     setEmail("");
@@ -73,31 +73,38 @@ export function Signup() {
       <Footer />
     </>
   );
-}
 
-async function sendDataUser(name: string, email: string, password: string) {
-  console.log("Sending data...", name, email, password);
+  async function sendDataUser(name: string, email: string, password: string) {
+    console.log("Sending data...", name, email, password);
 
-  const response = await fetch("http://localhost:3000/auth/register", {
-    method: "POST",
+    const response = await fetch("http://localhost:3000/auth/register", {
+      method: "POST",
 
-    headers: {
-      "Content-Type": "application/json",
-    },
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-    body: JSON.stringify({
-      name: name,
-      email: email,
-      password: password,
-    }),
-  });
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+      }),
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  if (!response.ok) {
-    console.error("Error creating user");
-    return;
+    if (!response.ok) {
+      console.error("Error creating user", data);
+      alert(
+        data.message == "invalid name"
+          ? "El nombre debe tener al menos 3 caracteres"
+          : "Error al crear el usuario",
+      );
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+
+    navigate("/");
   }
-
-  localStorage.setItem("token", data.token);
 }
