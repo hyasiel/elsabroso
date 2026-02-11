@@ -1,3 +1,5 @@
 Web de restaurante ficticio
 
-<img width="1579" height="780" alt="image" src="https://github.com/user-attachments/assets/ae25b418-6a4c-4521-8e11-ca81ebf1f750" />
+<img width="1584" height="773" alt="image" src="https://github.com/user-attachments/assets/97e37463-e239-44cd-95e0-8233367923d5" />
+
+
