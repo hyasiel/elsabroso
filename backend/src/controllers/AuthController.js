@@ -1,7 +1,7 @@
 const AuthService = require("../services/AuthService");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require("dotenv").config();
+
 
 //funcion registrar transmite datos a AuthService, recibe el token y lo devuelve al cliente
 async function register(req, res) {
@@ -49,7 +49,7 @@ async function verifyToken(req, res) {
 
     console.log("Token valid for user:", user.username);
 
-    res.status(200).json({ message: "Token is valid", user: user.username });
+    res.status(200).json({ message: "Token is valid", user: user.username, role: user.role });
   } catch (error) {
     console.log("Token verification error:", error.message);
     return res.status(500).json({ message: "Internal server error" });

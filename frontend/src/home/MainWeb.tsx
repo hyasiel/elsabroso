@@ -1,32 +1,10 @@
 import { Header } from "../ui/Header.tsx";
 import { Footer } from "../ui/Footer.tsx";
 import React from "react";
-import { useEffect } from "react";
+import { getToken } from "../utils/TokenHandle";
 
 export function MainWeb() {
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) return;
-
-    fetch("http://localhost:3000/auth/verifytoken", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Token verification response:", data);
-
-        if (data.user) {
-          alert(`Hola, ${data.user}!`);
-          console.log("Token is valid");
-        } else {
-          console.log("Token is invalid, clearing storage");
-          localStorage.removeItem("token");
-        }
-      });
-  }, []);
+  getToken();
 
   return (
     <React.Fragment>
