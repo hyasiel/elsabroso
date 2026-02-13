@@ -2,7 +2,7 @@ const AuthService = require("../services/AuthService");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
-
+const auth = new AuthService();
 //funcion registrar transmite datos a AuthService, recibe el token y lo devuelve al cliente
 async function register(req, res) {
   try {
@@ -17,6 +17,7 @@ async function register(req, res) {
   }
 }
 
+//login function
 async function login(req, res) {
   try {
     const { email, password } = req.body;
@@ -25,14 +26,11 @@ async function login(req, res) {
     const token = await auth.loginUser(email, password);
 
     if (token !== "user not exist")
-    return res.status(200).json({
-      message: "Login successful",
-      token
-    });
-  } 
-  
-  catch (error) {
-
+      return res.status(200).json({
+        message: "Login successful",
+        token,
+      });
+  } catch (error) {
     if (error.message == "Invalid credentials") {
       return res.status(404).json({ message: "invalid credentials" });
     }
@@ -40,6 +38,20 @@ async function login(req, res) {
     return res.status(500).json({ message: error });
   }
 }
+
+//update products function
+
+function updateProducts(req, res) {
+  const response = auth.updateProducts(req.userId.userId, req.body);
+  if (response == "Unauthorized")
+    res.status(401).json({ message: "unauthorized user" });
+
+  res.status(200).json({ message: "product posted !" });
+}
+
+//---------------------------------------------------------------------
+
+//verify function
 
 async function verifyToken(req, res) {
   console.log("data sendedddd: ", req.userId);
@@ -49,11 +61,15 @@ async function verifyToken(req, res) {
 
     console.log("Token valid for user:", user.username);
 
-    res.status(200).json({ message: "Token is valid", user: user.username, role: user.role });
+    res.status(200).json({
+      message: "Token is valid",
+      user: user.username,
+      role: user.role,
+    });
   } catch (error) {
     console.log("Token verification error:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
 
-module.exports = { register, verifyToken, login };
+module.exports = { register, verifyToken, login, updateProducts };

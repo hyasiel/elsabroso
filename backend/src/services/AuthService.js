@@ -1,12 +1,14 @@
 const bcrypt = require("bcrypt");
-const UserRepository = require("../repositories/UserRepositories");
+const repositories = require("../repositories/UserRepositories");
+
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 //clase para manejar la logica de autenticacion, se encarga de enviar datos al user repository
 class AuthService {
   constructor() {
-    this.userRepository = new UserRepository();
+    this.userRepository = new repositories.UserRepository();
+    this.AdminRepository = new repositories.AdminRepository();
   }
 
   //register function (recibe userData)
@@ -57,6 +59,18 @@ class AuthService {
       { expiresIn: "1h" },
     );
     return token;
+  }
+
+  //---------------------------------------------------------------
+
+  //admin functions
+  async updateProducts(user, product) {
+    //verificamos si el usuario es admin
+    const userRole = await this.UserRepository.findById(user);
+    if (!userRole === "admin") return "Unauthorized";
+
+    //si es admin publicamos producto en db
+    const responsedPoduct = await this.AdminRepository.createNewPost(product);
   }
 }
 

@@ -39,4 +39,8 @@ class UserRepository {
   }
 }
 
-module.exports = UserRepository;
+class AdminRepository {
+  async createNewPost() {}
+}
+
+module.exports = { UserRepository, AdminRepository };
