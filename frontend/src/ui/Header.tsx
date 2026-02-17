@@ -2,9 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 
 import { getToken } from "../utils/TokenHandle";
 import { useState, useEffect } from "react";
+import { useLocalStorage } from "react-use";
 
 export function Header() {
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useLocalStorage("role");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -23,6 +24,7 @@ export function Header() {
         } else {
           console.log("Token is invalid, clearing storage");
           localStorage.removeItem("token");
+          setRole("");
         }
       });
   }, []);
@@ -44,7 +46,7 @@ export function Header() {
 
           {role == "admin" && (
             <li
-              className={` nav-item__e ${isDark ? "darklinks" : ""} ${location.pathname === "/menu" ? "isActive" : ""}`}
+              className={` nav-item__e ${isDark ? "darklinks" : ""} ${location.pathname === "/admin" ? "isActive" : ""}`}
             >
               <Link to="/admin">Admin</Link>
             </li>
