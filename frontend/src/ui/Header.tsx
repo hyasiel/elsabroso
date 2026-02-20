@@ -7,12 +7,14 @@ import { useLocalStorage } from "react-use";
 export function Header() {
   const [role, setRole] = useLocalStorage("role");
 
+  const API_URL = import.meta.env.VITE_API_URL || "";
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token) return;
 
-    fetch("http://localhost:3000/auth/verifytoken", {
+    fetch(`${API_URL}/auth/verifytoken`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

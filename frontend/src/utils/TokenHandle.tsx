@@ -7,7 +7,9 @@ export function getToken() {
 
     if (!token) return;
 
-    fetch("http://localhost:3000/auth/verifytoken", {
+    const API_URL = import.meta.env.VITE_API_URL || "";
+
+    fetch(`${API_URL}/auth/verifytoken`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

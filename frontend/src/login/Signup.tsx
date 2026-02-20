@@ -77,7 +77,8 @@ export function Signup() {
   async function sendDataUser(name: string, email: string, password: string) {
     console.log("Sending data...", name, email, password);
 
-    const response = await fetch("http://localhost:3000/auth/register", {
+    const API_URL = import.meta.env.VITE_API_URL || "";
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
 
       headers: {

@@ -18,6 +18,7 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mariadb": "^3.4.5",
+    "multer": "^2.0.2",
     "nanoid": "^5.1.6",
     "nodemin": "^1.0.1",
     "nodemon": "^3.1.11"

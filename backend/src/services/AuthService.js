@@ -4,11 +4,11 @@ const repositories = require("../repositories/UserRepositories");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-//clase para manejar la logica de autenticacion, se encarga de enviar datos al user repository
+// clase para manejar la logica de autenticacion, se encarga de enviar datos al user repository
 class AuthService {
   constructor() {
-    this.userRepository = new repositories.UserRepository();
-    this.AdminRepository = new repositories.AdminRepository();
+    // repositories is now an object with both repos
+    this.userRepository = repositories.UserRepository;
   }
 
   //register function (recibe userData)
@@ -62,16 +62,7 @@ class AuthService {
   }
 
   //---------------------------------------------------------------
-
-  //admin functions
-  async updateProducts(user, product) {
-    //verificamos si el usuario es admin
-    const userRole = await this.UserRepository.findById(user);
-    if (!userRole === "admin") return "Unauthorized";
-
-    //si es admin publicamos producto en db
-    const responsedPoduct = await this.AdminRepository.createNewPost(product);
-  }
 }
 
-module.exports = AuthService;
+// export a single instance so callers can use methods directly
+module.exports = new AuthService();

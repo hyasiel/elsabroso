@@ -11,6 +11,7 @@ import "./index.css";
 import "./nosotros/nosotros.css";
 import "./menu/menu.css";
 import "./login/log.css";
+import "./admin/admin.css";
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 

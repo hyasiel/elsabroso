@@ -1,54 +1,54 @@
 const AuthService = require("../services/AuthService");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 
-const auth = new AuthService();
-//funcion registrar transmite datos a AuthService, recibe el token y lo devuelve al cliente
+// funcion registrar transmite datos a AuthService, recibe el token y lo devuelve al cliente
 async function register(req, res) {
   try {
-    const auth = new AuthService();
-    //llamamos metodo registerUser y devolvemos token si se crea correctamente
-    auth.registerUser(req.body).then((token) => {
-      console.log("User registered successfully, token:", token);
-      res.status(201).json({ message: "User registered successfully", token });
-    });
+    const token = await AuthService.registerUser(req.body);
+
+    if (token === "User already exists") {
+      return res.status(400).json({ message: token });
+    }
+
+    console.log("User registered successfully, token:", token);
+    return res
+      .status(201)
+      .json({ message: "User registered successfully", token });
   } catch (error) {
+    console.error("Register error:", error);
     res.status(500).json({ message: "Register user error" });
   }
 }
 
-//login function
+// login function
 async function login(req, res) {
   try {
     const { email, password } = req.body;
+    const authService = AuthService;
+    const token = await authService.loginUser(email, password);
 
-    const auth = new AuthService();
-    const token = await auth.loginUser(email, password);
-
-    if (token !== "user not exist")
-      return res.status(200).json({
-        message: "Login successful",
-        token,
-      });
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+    });
   } catch (error) {
-    if (error.message == "Invalid credentials") {
-      return res.status(404).json({ message: "invalid credentials" });
+    if (
+      error.message === "Invalid credentials" ||
+      error.message === "user not exist"
+    ) {
+      // avoid leaking which one failed
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    return res.status(500).json({ message: error });
+    console.error("Login error:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }
 
-//update products function
-
-function updateProducts(req, res) {
-  const response = auth.updateProducts(req.userId.userId, req.body);
-  if (response == "Unauthorized")
-    res.status(401).json({ message: "unauthorized user" });
-
-  res.status(200).json({ message: "product posted !" });
-}
-
+// NOTE: product updates/creation should be handled by ProductController
+// the old updateProducts function was unused and pointed at AuthService which
+// does not expose product logic. It has been removed.
 //---------------------------------------------------------------------
 
 //verify function
@@ -56,7 +56,7 @@ function updateProducts(req, res) {
 async function verifyToken(req, res) {
   console.log("data sendedddd: ", req.userId);
   try {
-    const auth = new AuthService();
+    const auth = AuthService;
     const user = await auth.userRepository.findById(req.userId.userId);
 
     console.log("Token valid for user:", user.username);
@@ -72,4 +72,4 @@ async function verifyToken(req, res) {
   }
 }
 
-module.exports = { register, verifyToken, login, updateProducts };
+module.exports = { register, verifyToken, login };

@@ -1,0 +1,21 @@
+.form-section {
+  display: flex;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+
+}
+
+.image-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}

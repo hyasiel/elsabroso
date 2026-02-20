@@ -73,7 +73,8 @@ function sendDataUser(
   try {
     console.log("Sending login data:", { email, password });
 
-    fetch("http://localhost:3000/auth/login", {
+    const API_URL = import.meta.env.VITE_API_URL || "";
+    fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
